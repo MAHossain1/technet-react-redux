@@ -1,23 +1,33 @@
 import ProductReview from '@/components/ProductReview';
 import { Button } from '@/components/ui/button';
+import { toast } from '@/components/ui/use-toast';
+import { useSingleProductQuery } from '@/redux/features/api/apiSlice';
+import { addToCart } from '@/redux/features/cart/cartSlice';
+import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { IProduct } from '@/types/globalTypes';
-import { useEffect, useState } from 'react';
+import {
+  JSXElementConstructor,
+  Key,
+  ReactElement,
+  ReactFragment,
+  useEffect,
+  useState,
+} from 'react';
 import { useParams } from 'react-router-dom';
 
 export default function ProductDetails() {
   const { id } = useParams();
+  const dispatch = useAppDispatch();
 
-  //! Temporary code, should be replaced with redux
-  const [data, setData] = useState<IProduct[]>([]);
-  useEffect(() => {
-    fetch('../../public/data.json')
-      .then((res) => res.json())
-      .then((data) => setData(data));
-  }, []);
+  const { data: product, isLoading, error } = useSingleProductQuery(id);
 
-  const product = data?.find((item) => item._id === Number(id));
+  const handleAddProduct = (product: IProduct) => {
+    dispatch(addToCart(product));
 
-  //! Temporary code ends here
+    toast({
+      description: 'Product Added from product details page',
+    });
+  };
 
   return (
     <>
@@ -29,11 +39,11 @@ export default function ProductDetails() {
           <h1 className="text-3xl font-semibold">{product?.name}</h1>
           <p className="text-xl">Rating: {product?.rating}</p>
           <ul className="space-y-1 text-lg">
-            {product?.features?.map((feature) => (
+            {product?.features?.map((feature: string) => (
               <li key={feature}>{feature}</li>
             ))}
           </ul>
-          <Button>Add to cart</Button>
+          <Button onClick={() => handleAddProduct(product)}>Add to cart</Button>
         </div>
       </div>
       <ProductReview />
