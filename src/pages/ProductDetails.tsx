@@ -1,8 +1,8 @@
 import ProductReview from '@/components/ProductReview';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
-import { useSingleProductQuery } from '@/redux/features/api/apiSlice';
 import { addToCart } from '@/redux/features/cart/cartSlice';
+import { useSingleProductQuery } from '@/redux/features/products/productApi';
 import { useAppDispatch } from '@/redux/hook';
 import { IProduct } from '@/types/globalTypes';
 
