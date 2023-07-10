@@ -1,5 +1,5 @@
 import { auth } from '@/lib/firebase';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -50,10 +50,10 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUser: (state, action) => {
+    setUser: (state, action: PayloadAction<string | null>) => {
       state.user.email = action.payload;
     },
-    setLoading: (state, action) => {
+    setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
   },
